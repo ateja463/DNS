@@ -1,17 +1,29 @@
+CXX=g++
+LIBS=-pthread
+RM = rm -f
+SERVER_EXE = server
+CLIENT_EXE = client
+SERVER_SRCS = server.cpp 
+SERVER_OBJS = $(SERVER_SRCS:.cpp=.o)
+CLIENT_SRCS  = client.cpp
+CLIENT_OBJS = $(CLIENT_SRCS:.cpp=.o)
 
-all : server client
+build : $(SERVER_EXE) $(CLIENT_EXE)
 
-server :main.o
-	$(CXX) main.o -o server -pthread
+$(SERVER_EXE):$(SERVER_OBJS)
+	$(CXX) $(SERVER_OBJS) -o $(SERVER_EXE) $(LIBS)
 
-client:client.o
-	$(CXX) client.o -o client
+$(CLIENT_EXE):$(CLIENT_OBJS)
+	$(CXX) $(CLIENT_OBJS) -o $(CLIENT_EXE)
 
-main.o:AVLTree.cpp AVLTree.h main.cpp
-	$(CXX) -c main.cpp
+$(SERVER_OBJS):$(SERVER_SRCS)
+	$(CXX) -c $(SERVER_SRCS)
 
-client.o:client.cpp
-	$(CXX) -c client.cpp
+$(CLIENT_OBJS):$(CLIENT_SRCS)
+	$(CXX) -c $(CLIENT_SRCS)
 
-	
+clean:
+	$(RM) $(SERVER_EXE) $(SERVER_OBJS)
+	$(RM) $(CLIENT_EXE) $(CLIENT_OBJS)
+.PHONY: clean
 
